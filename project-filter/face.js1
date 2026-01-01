@@ -1,0 +1,293 @@
+// clmtrackr + p5 basic exmaple. Face Tracking example created by Kyle McDonald revised by Xin Xin, 2020
+// https://kylemcdonald.github.io/cv-examples/
+
+let capture;
+let tracker;
+let positions;
+let cnv;
+let firstClickSkipped = false;
+
+let words = [
+  "伱不湜我，所姒伱鈈会眀白伱對莪の薏図。",
+  " ぺ畱ぅ很９的頭發能ゐ尒説剪就剪，愛ぅ很９的尒也能説忘就忘。◇",
+  "離開辷個折磨妳感情啲亽，始終者β是對啲",
+  "涐冇密集恐惧症，不能接近心眼囝多の亽",
+  "ㄩ總有⒈個人要贏的，那個亽為什么不能是我",
+  "朩要過分善良，畢竟有些亽，真的挺朩是亽的",
+  "涐 们 旳 丗 届 、 能 ド 能 永 远 阳 光 灿 烂",
+  "事實証明感情是岢y被慢慢淡掉的哪有那庅多⒈輩子的事",
+  "“自尊、？自爱、？我把一切都丢弃,我变成了最肮脏的东西",
+  "★゜ 尒 詠 逺 Sんī 硪 德 蕞 嗳，⑧ 菅 āì 妳 侑 哆 難，莪 啲 惢 芷 想 屬 於 伱。︶ㄣ",
+  "╰+當亱募降臨dㄖ寸鯸孤韣禾ó寂寞湧仩訫頭。メo",
+  "〆丗事本就惡俗ъú堪能忼嘅凢f能諒幾亼",
+  "①直佷紾惜恠①起のㄖ孒.",
+  "吢 早已蒾矢 · 煙の稥菋... 彌漫",
+  "涐只是一个罘起眼旳尕㈢",
+  "&涐想.沵德>芯里只裝著涐﹌﹋",
+  "偸偸 旳 想念 沵旳 ﹁切.勼足夠 る.!!",
+  "莪哭ㄋ，眼淚變成ㄋ廉價的祈求",
+  "吢恠痛.涙恠蓅.噌俓の所冇苡卟恠擁冇",
+];
+
+// 你给的 htwords（只有 9 句也没关系，我做了循环兜底）
+let htwords = [
+  "mY 734r5 4r3 F411!n6",
+  "10n31Y m3 4nd mY 8r0k3n h34r7",
+  "7!m3 w45h 0FF 411 7h3 h4pp!n355",
+  "4v3C 70u7 13 C0ur463 d3 m377r3 3n p14C3 13 p1u5 8r!114n7 50ur!r3",
+  "p4!n !5 10v3r",
+  "C4nn07 Y0u 533 mY 734r5? ",
+  "Y0u 700k 4 p4r7 0F mY 50u1.",
+  "Y0u 13F7 mY w0r1d 4nd 0n1Y p4!n r3m4!n5.",
+  "! w!5h ! h4v3 n3v3r m337 Y0u"
+];
+
+let currentWordIndex = 0;
+let currentMode = "zh"; // "zh" | "ht"
+
+let img = [];
+let currentImage = 0;
+
+let tears = []; // ✅ 泪：会留下 + 淡出消失
+
+var img11, img22, img44, img55;
+
+// 你可以调这些参数
+const TEAR_SPAWN_EVERY_N_FRAMES = 10; // 越小越密
+const TEAR_MAX = 80;               // 屏幕上最多保留多少滴
+const TEAR_LIFE_FRAMES = 140;       // 每滴泪的总寿命（含淡出）
+const TEAR_FADE_FRAMES = 80;        // 最后多少帧开始淡出
+const TEAR_SIZE_MIN = 60;
+const TEAR_SIZE_MAX = 120;
+
+// ✅ 眼睛 + 泪统一往下 10px
+const EYE_OFFSET_Y = 50;
+
+function preload() {
+  img11 = loadImage("img11.png");
+  img22 = loadImage("img22.png");
+  img44 = loadImage("beibei.png");
+  img55 = loadImage("fish.png");
+
+  for (let i = 0; i < 9; i++) {
+    img[i] = loadImage("img/bg" + i + ".png");
+  }
+}
+
+function setup() {
+  cnv = createCanvas(windowWidth, windowHeight);
+
+  // 让键盘无需首次点击即可响应
+  cnv.elt.tabIndex = 0;
+  cnv.elt.focus();
+
+  capture = createCapture(VIDEO);
+  capture.size(width, height);
+  capture.hide();
+
+  // load clmtrackr functions:
+  tracker = new clm.tracker();
+  tracker.init();
+  tracker.start(capture.elt);
+}
+
+function draw() {
+  // camera (mirrored)
+  push();
+  translate(width, 0);
+  scale(-1, 1);
+  image(capture, 0, 0, width, height);
+  pop();
+
+  // background overlay
+  push();
+  tint(255, 127);
+  image(img[currentImage], 0, 0, windowWidth, windowHeight);
+  pop();
+
+  positions = tracker.getCurrentPosition();
+
+  // tears update + draw (mirror space to match your camera mirror)
+  push();
+  translate(width, 0);
+  scale(-1, 1);
+
+  if (positions && positions.length > 0) {
+    maybeSpawnTearsFromEyes(positions);
+  }
+
+  for (let i = tears.length - 1; i >= 0; i--) {
+    tears[i].update();
+    tears[i].display();
+    if (tears[i].isDead()) tears.splice(i, 1);
+  }
+
+  pop();
+
+  // overlay beibei
+  push();
+  tint(255, 127);
+  image(img44, 0, 0, windowWidth, windowHeight);
+  pop();
+
+  // choose which text to display (zh or ht)
+  let displayText = getDisplayText();
+
+  // text layer
+  push();
+  textSize(90);
+  textStyle(BOLD);
+  let green = color("#3FFF00");
+  fill(green);
+  text(displayText, 88, 180);
+  pop();
+
+  // blurred shadow text
+  push();
+  blur(1);
+  textSize(90);
+  let black = color("#1C2619");
+  fill(black);
+  tint(255, 127);
+  text(displayText, 92, 180);
+  pop();
+
+  // fish on face point — ✅ 往下 10px
+  if (positions && positions.length > 0) {
+    image(img55, positions[11][0], positions[1][1] + EYE_OFFSET_Y, 220, 220);
+  }
+
+  // keep tears list under control
+  if (tears.length > TEAR_MAX) {
+    tears.splice(0, tears.length - TEAR_MAX);
+  }
+}
+
+function getDisplayText() {
+  if (currentMode === "ht") {
+    // htwords 不够长时循环使用，避免 undefined
+    let idx = currentWordIndex % htwords.length;
+    return htwords[idx];
+  }
+  return words[currentWordIndex];
+}
+
+function toggleHT() {
+  currentMode = currentMode === "zh" ? "ht" : "zh";
+}
+
+function maybeSpawnTearsFromEyes(pos) {
+  // clmtrackr: 27, 32 commonly around eyes (varies but usually works)
+  if (!pos[27] || !pos[32]) return;
+
+  if (frameCount % TEAR_SPAWN_EVERY_N_FRAMES !== 0) return;
+
+  // 让泪从两只眼附近落下 — ✅ 往下 10px
+  spawnTear(pos[27][0], pos[27][1] + EYE_OFFSET_Y, random(TEAR_SIZE_MIN, TEAR_SIZE_MAX), img11);
+  spawnTear(pos[32][0], pos[32][1] + EYE_OFFSET_Y, random(TEAR_SIZE_MIN, TEAR_SIZE_MAX), img22);
+}
+
+function spawnTear(x, y, s, sprite) {
+  // 给一点随机，让它更“哭得真实”
+  let jitterX = random(-10, 10);
+  let jitterY = random(-6, 6);
+
+  tears.push(new Tear({
+    x: x + jitterX,
+    y: y + jitterY,
+    size: s,
+    img: sprite
+  }));
+}
+
+class Tear {
+  constructor(opts) {
+    this.x = opts.x;
+    this.y = opts.y;
+    this.size = opts.size;
+    this.img = opts.img;
+
+    this.vy = random(2.2, 5.2);
+    this.vx = random(-0.4, 0.4);
+
+    this.life = TEAR_LIFE_FRAMES;
+    this.age = 0;
+
+    // 留下来感：轻微摆动
+    this.wobbleSeed = random(1000);
+  }
+
+  update() {
+    this.age++;
+
+    // 下落 + 很轻微左右漂
+    this.y += this.vy;
+    this.x += this.vx;
+
+    let wobble = (noise(this.wobbleSeed + this.age * 0.03) - 0.5) * 1.2;
+    this.x += wobble;
+
+    // 到底部以后变慢一点，像“停住留在那儿”
+    if (this.y > height * 0.92) {
+      this.vy *= 0.92;
+      this.vx *= 0.92;
+    }
+  }
+
+  alpha() {
+    // 前半段正常显示，最后 TEAR_FADE_FRAMES 开始淡出
+    let remain = this.life - this.age;
+    if (remain <= TEAR_FADE_FRAMES) {
+      return map(remain, 0, TEAR_FADE_FRAMES, 0, 255, true);
+    }
+    return 255;
+  }
+
+  display() {
+    push();
+    tint(255, this.alpha());
+    image(this.img, this.x - this.size * 0.5, this.y - this.size * 0.5, this.size, this.size);
+    pop();
+  }
+
+  isDead() {
+    return this.age >= this.life;
+  }
+}
+
+function mousePressed() {
+  // 第一次点击只用来获取焦点，不保存
+  if (!firstClickSkipped) {
+    firstClickSkipped = true;
+    if (cnv) cnv.elt.focus();
+    return;
+  }
+  saveCanvas("brokenheart" + ".jpg");
+}
+
+function keyPressed() {
+  // 1) 先处理模式切换：H / T
+  if (key === "h" || key === "H" || key === "t" || key === "T") {
+    toggleHT();
+    console.log("MODE:", currentMode); // 你先留着，确认好再删
+    return;
+  }
+
+  // 2) ENTER：换背景
+  if (keyCode === ENTER) {
+    currentImage++;
+    if (currentImage >= img.length) currentImage = 0;
+    return;
+  }
+
+  // 3) SPACE：下一句
+  if (key === " ") {
+    currentWordIndex = (currentWordIndex + 1) % words.length;
+    return;
+  }
+}
+ 
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
+  capture.size(windowWidth, windowHeight);
+}

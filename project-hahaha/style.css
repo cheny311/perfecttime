@@ -1,0 +1,230 @@
+html, body {
+  margin: 0;
+  padding: 0;
+}
+canvas {
+  display: block;
+}
+/* 基础重置 */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: "Tomorrow", "SimSun", "STSong", serif; background: #fff; overflow-x: hidden; }
+
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 60px 40px;
+    position: relative;
+}
+
+/* 顶部与列表 */
+.top-section {
+    display: flex;
+    justify-content: space-between;
+}
+.title-large { font-size: 3.5rem; font-weight: 400; }
+.subtitle { font-size: 1.8rem; color: #333; }
+
+.project-sidebar { text-align: right; }
+.project-sidebar ul { list-style: none; margin-top: 10px; font-size: 0.85rem; }
+
+/* 中间三栏布局 */
+.gallery-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 40px 0;
+    min-height: 800px; /* 留出更多垂直空间给 SVG */
+}
+
+.box { border: 1px solid #000; display: flex; align-items: center; justify-content: center; }
+.image-left { width: 320px; height: 420px; font-size: 2rem; }
+.image-right { width: 380px; height: 320px; font-size: 1.8rem; align-self: center; }
+
+.ha-svg-wrapper {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    position: relative;
+}
+.ha-svg { height: 100%; max-width: 400px; }
+.content-middle {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* 去掉中间列 */
+    align-items: center;
+    gap: 30px;
+    width: 100%;
+}
+
+.ha-character {
+    display: none; /* 去掉中间的框/内容 */
+}
+
+.box-img {
+    border: 1px solid #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f9f9f9;
+    position: relative;
+    z-index: 3;
+    cursor: grab; /* 框随拖动 */
+}
+
+.left-img {
+    width: 320px;
+    height: 420px;
+    transform: translate(-20px, -80%); /* 左移 20px、上移 80% */
+}
+
+.right-img {
+    width: 380px;
+    height: 320px;
+    font-size: 1.2rem;
+    position: relative;
+    z-index: 3;
+    transform: translate(-180px, -10%); /* 初始左移 180px，上移 10% */
+}
+
+/* 底部文字排版 */
+.footer-content {
+    display: grid;
+    grid-template-columns: 200px 1fr 1fr;
+    gap: 50px;
+    margin-top: 40px;
+}
+
+/* 竖排文字关键代码 */
+.vertical-text-group {
+    display: flex;
+    gap: 30px;
+}
+.v-text {
+    writing-mode: vertical-rl;
+    font-size: 2rem;
+    letter-spacing: 0.5rem;
+}
+
+.main-paragraph { line-height: 1.8; font-size: 1.1rem; text-align: justify; }
+.side-paragraph { line-height: 1.6; font-size: 0.9rem; color: #555; }
+
+/* 底部导航链接 */
+.bottom-nav {
+    display: flex;
+    justify-content: flex-end;
+    gap: 40px;
+    margin-top: 60px;
+}
+.bottom-nav a { text-decoration: none; color: #000; }
+.bottom-nav a.active { border-bottom: 1px solid #000; }
+
+/* 确保容器居中并有足够空间 */
+.ha-character {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    pointer-events: none;
+    z-index: 1; /* 允许左右盒子覆盖 */
+    opacity: 0.9;
+}
+
+/* 控制 SVG 文件的显示大小 */
+.ha-svg-file {
+    transform: translate(220px, -60%); /* 右移 20px，上移 50% */
+    height: 800px; /* 放大做背景 */
+    width: auto;    /* 保持比例 */
+    max-width: none;
+    display: block;
+}
+
+/* 视频覆盖层，居中后左移20%、上移40% */
+.ha-video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transform: translate(0, 0);
+    z-index: 5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: grab;
+    padding: 1px; /* 让框比视频大 2px */
+    box-sizing: border-box;
+}
+
+.ha-video video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    border: none;
+}
+
+.photo-frame {
+    margin: 20px auto 0;
+    width: 340px;
+    height: 240px;
+    border: 1px solid #000;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #fafafa;
+}
+
+.photo-img {
+    max-width: 100%;
+    max-height: 100%;
+    display: block;
+}
+
+.photo-hint {
+    position: absolute;
+    bottom: 8px;
+    right: 8px;
+    background: rgba(255, 255, 255, 0.85);
+    border: 1px solid #000;
+    padding: 4px 8px;
+    font-size: 12px;
+    font-family: "Tomorrow", sans-serif;
+}
+.video-controls {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.8);
+    border: 1px solid #000;
+    padding: 4px 8px; /* 略缩小整体 */
+    border-radius: 10px;
+    z-index: 6;
+}
+
+.video-controls button {
+    font-family: "Tomorrow", sans-serif;
+    font-size: 11px;
+    border: 1px solid #000;
+    background: #f9f9f9;
+    padding: 3px 7px;
+    cursor: pointer;
+}
+
+.video-controls button:hover {
+    background: #eee;
+}
+
+.volume-label {
+    font-size: 11px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.volume-label input[type="range"] {
+    width: 70px; /* 缩短滑杆 */
+}

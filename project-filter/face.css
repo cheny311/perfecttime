@@ -1,0 +1,108 @@
+html,
+body {
+  font-family: "Lexend";
+  margin: 0;
+  padding: 0;
+}
+
+canvas {
+  display: block;
+}
+
+.button-container {
+  position: relative;
+  width: 100%;
+  height: auto;
+  margin-top: 50px;
+  /* Add space above the button */
+  display: flex;
+  justify-content: center;
+  /* Center the button horizontally */
+}
+
+.button-container {
+  text-align: center;
+  /* Center the button horizontally */
+  margin-top: 20px;
+  /* Add space above the button */
+}
+
+.button {
+  --b: 2px;
+  /* Border thickness */
+  --s: 0.5em;
+  /* Padding size */
+  --color: #fc01b1;
+  /* --color: #88ff00;   Primary line color (green) */
+  --hover-color: #82867f;
+  /* Hover line color (pink) */
+  --active-color: #fc0101;
+  /* Active line color (red) */
+
+  padding: var(--s) calc(var(--s) * 2);
+  color: var(--color);
+  /* Initial text color */
+  border: var(--b) solid var(--color);
+  /* Initial border color */
+  border-radius: 5px;
+  /* Slightly rounded corners */
+  background: none;
+  /* Transparent background */
+  font-size: 16px;
+  font-weight: bold;
+  text-transform: uppercase;
+  cursor: pointer;
+  position: relative;
+  /* Needed for pseudo-elements */
+  transition: all 0.3s ease-in-out;
+  overflow: hidden;
+}
+
+.button::before,
+.button::after {
+  content: '';
+  position: absolute;
+  height: var(--b);
+  /* Same as border thickness */
+  width: 100%;
+  background: var(--hover-color);
+  /* Hover line color */
+  top: 0;
+  left: -100%;
+  /* Initially off the button */
+  transition: all 0.3s ease-in-out;
+}
+
+.button::after {
+  top: auto;
+  /* Position at the bottom */
+  bottom: 0;
+  left: 100%;
+  /* Initially off the button */
+}
+
+.button:hover::before {
+  left: 0;
+  /* Slide the top line in */
+}
+
+.button:hover::after {
+  left: 0;
+  /* Slide the bottom line in */
+}
+
+.button:hover {
+  color: var(--hover-color);
+  /* Change text color to hover color */
+  border-color: var(--hover-color);
+  /* Change border color to hover color */
+}
+
+.button:active {
+  color: white;
+  /* White text on active */
+  background: var(--active-color);
+  /* Active background color */
+  border-color: var(--active-color);
+  /* Match border to active background */
+}

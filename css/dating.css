@@ -433,3 +433,171 @@ canvas {
     padding: 18px 20px;
   }
 }
+/* 修改外层包裹容器 */
+.readme-wrapper {
+    font-family: "Tomorrow", sans-serif; /* 使用你引用的 Google 字体 */
+   
+    padding: 20px 60px 60px 60px; 
+    line-height: 1.4;
+    position: relative;
+    max-width: 1400px;
+    margin: 0 auto;
+    color: #000;
+}
+
+/* 1. 顶部悬浮框：更细的边框，更靠右一点 */
+.floating-box {
+    position: absolute;
+    top: 20px;
+    left: 45%; /* 略微偏离中轴线，模仿图片 */
+    border: 0.5px solid #000; /* 极细边框 */
+    padding: 4px 12px;
+    font-size: 13px;
+    background: white;
+    z-index: 10;
+}
+
+/* 2. 布局调整：增加间距 */
+.content-layout {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 40px;
+    align-items: flex-start;
+}
+
+/* 3. 左侧主内容：改为居中对齐，并让段落交错 */
+.main-text {
+    width: 60%;
+    text-align: center; /* 改为居中，方便通过 margin 实现错落感 */
+}
+
+.main-text h1 {
+    font-size: 1.8rem;
+    margin-bottom: 60px;
+    font-weight: 400;
+    letter-spacing: 1px;
+}
+
+/* 核心：模仿图片中的阶梯状感 */
+.main-text p {
+    margin: 0 auto 15px auto;
+    max-width: 450px; /* 限制宽度让文字折行更像诗歌 */
+}
+
+.indent-1 { transform: translateX(-80px); } /* 向左移 */
+.indent-2 { transform: translateX(60px); }  /* 向右移 */
+.indent-3 { transform: translateX(0px); }   /* 居中 */
+
+/* 4. 右侧列表：改为左对齐（紧贴右侧区域） */
+.project-list-sidebar {
+    width: 200px;
+    text-align: left;
+}
+
+.project-list-sidebar p {
+    font-size: 1.1rem;
+    margin-bottom: 15px;
+}
+
+.project-list-sidebar ol {
+    list-style: none;
+    padding: 0;
+    line-height: 1.6;
+    font-size: 1.1rem;
+}
+
+/* 5. 底部导航：固定在右下角 */
+.bottom-nav {
+    position: fixed;
+    bottom: 40px;
+    right: 60px;
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
+
+.bottom-nav a {
+    text-decoration: none;
+    color: #000;
+    font-size: 14px;
+    transition: opacity 0.3s;
+}
+
+.bottom-nav a:hover {
+    opacity: 0.5;
+}
+
+/* 底部导航统一风格，无大小差异 */
+.poetic-flow {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+}
+
+.poetic-flow {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 40px; /* 块与块之间的间距 */
+}
+
+.text-block {
+    display: flex;
+    flex-direction: column;
+    max-width: 550px; /* 限制宽度制造诗歌感 */
+    transition: transform 0.3s ease;
+}
+
+/* 英文样式 */
+.text-block .en {
+    font-size: 15px;
+    line-height: 1.6;
+    margin-bottom: 8px;
+    color: #000;
+}
+
+/* 中文样式：紧随其后，淡淡的回声感 */
+.text-block .zh {
+    font-size: 14px;
+    line-height: 1.6;
+    color: #777;
+    margin: 0;
+}
+
+/* 核心错落逻辑 */
+.pos-left {
+    align-self: flex-start;
+    text-align: left;
+}
+
+.pos-right {
+    align-self: flex-end;
+    text-align: left; /* 保持文字左对齐，但块在右边 */
+    margin-right: 5%;
+}
+
+.pos-center {
+    align-self: center;
+    text-align: center;
+    max-width: 450px;
+}
+
+/* 窄列增加变化 */
+.narrow {
+    max-width: 450px;
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+    .text-block {
+        align-self: center !important;
+        margin: 0 !important;
+        max-width: 100%;
+        padding: 0 20px;
+    }
+}
+
+/* 这里的微调能增加灵动感 */
+.poetic-flow p:nth-child(3n) { transform: rotate(-0.5deg); }
+.poetic-flow p:nth-child(5n) { transform: rotate(0.5deg); }

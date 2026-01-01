@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="zh">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Project Layout</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Tomorrow:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --border: 1px solid #222;
+      --text: #111;
+      --bg: #f5f0e8;
+    }
+
+    *{ box-sizing: border-box; }
+
+    html, body{
+      height: 100%;
+      margin: 0;
+    }
+
+    body{
+      font-family: "Tomorrow", "Times New Roman", serif;
+      color: var(--text);
+      background: var(--bg);
+    }
+
+    /* page frame */
+    .page{
+      min-height: 100vh;
+      padding: 36px 42px 60px;
+      position: relative;
+
+      display: grid;
+      grid-template-columns: 260px 1fr 90px;
+      gap: 40px;
+    }
+
+    /* LEFT */
+    .left{
+      display: flex;
+      flex-direction: column;
+      gap: 26px;
+      padding-top: 10px;
+    }
+
+    .name{
+      font-size: 18px;
+      line-height: 1.15;
+    }
+
+    .circle-btn{
+      width:90px;
+      height: 90px;
+      border-radius: 999px;
+      border: var(--border);
+      background: transparent;
+      font-size: 13px;
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+    }
+
+    .circle-text{
+      width: 250px;
+      height: 250px;
+      border-radius: 999px;
+      border: var(--border);
+      padding: 22px 20px;
+      overflow: hidden;
+    }
+
+    .circle-text p{
+      margin: 0;
+      font-size: 12px;
+      line-height: 1.35;
+    }
+
+    /* MAIN */
+    .main{
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .title{
+      margin: 0;
+      font-size: 28px;
+      font-weight: 500;
+    }
+
+    .main-box{
+      border: var(--border);
+      height: 680px;
+      width: 100%;
+      overflow: hidden;
+    }
+
+    .main-box iframe{
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    /* RIGHT */
+    .right{
+      padding-top: 14px;
+    }
+
+    .right-hint{
+      font-size: 12px;
+      text-align: right;
+      margin-bottom: 10px;
+      opacity: 0.9;
+    }
+
+    .right-list{
+      list-style: none;
+      padding: 0;
+      margin: 0;
+
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+
+      font-size: 12px;
+      text-align: right;
+    }
+
+    /* FOOTER */
+    .footer{
+      position: absolute;
+      right: 42px;
+      bottom: 18px;
+
+      display: flex;
+      gap: 36px;
+      font-size: 14px;
+    }
+
+    .footer a{
+      color: var(--text);
+      text-decoration: none;
+    }
+
+    .footer a:hover{
+      text-decoration: underline;
+    }
+
+    /* Responsive */
+    @media (max-width: 900px){
+      .page{
+        grid-template-columns: 1fr;
+        gap: 22px;
+      }
+      .right{
+        order: 3;
+      }
+      .footer{
+        position: static;
+        justify-content: flex-end;
+        padding-top: 20px;
+      }
+      .circle-text{
+        width: 220px;
+        height: 220px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="page">
+
+    <!-- LEFT -->
+    <aside class="left">
+      <div class="name">
+        <div>Yingyu</div>
+        <div>Chen</div>
+      </div>
+
+      <button class="circle-btn"></button>
+
+      <div class="circle-text">
+        <!-- <p>
+          自我介绍：我是一个好女孩。<br>
+          古今多少事，滚滚长江东逝水。<br>
+          浪花淘尽英雄。几度夕阳红。<br>
+          白发渔樵江渚上，都付笑谈中。<br><br>
+          滚滚长江东逝水，浪花淘尽英雄。<br>
+          是非成败转头空，青山依旧在，几度夕阳红。<br>
+          白发渔樵江渚上，惯看秋月春风。一壶……
+        </p> -->
+      </div>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="main">
+      <h1 class="title">Project</h1>
+      <section class="main-box">
+        <iframe src="face.html" title="Project Filter - Face" allow="camera; microphone"></iframe>
+      </section>
+    </main>
+
+    <!-- RIGHT -->
+    <aside class="right">
+      <div class="right-hint">project list</div>
+      <ol class="right-list">
+        <li>1</li><li>2</li><li>3</li><li>4</li><li>5</li>
+        <li>6</li><li>7</li><li>8</li><li>9</li><li>10</li>
+        <li>11</li><li>12</li><li>13</li><li>14</li>
+      </ol>
+    </aside>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+         <a href="../contact.html">contact</a>
+      <a href="../index.html">home</a>
+      <a href="read.html">README</a>
+    </footer>
+
+  </div>
+</body>
+</html>

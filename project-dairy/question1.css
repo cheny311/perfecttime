@@ -1,0 +1,287 @@
+/* ===== Base ===== */
+body {
+  /* 允许内容自由延伸，不要限制死高度 */
+  min-height: 100vh;
+  margin: 0;
+  /* padding 保持原样 */
+  padding: clamp(16px, 4vw, 48px);
+  
+  background: linear-gradient(to bottom, #ff0080a8, #91ff009c);
+  background-attachment: fixed;
+  background-size: cover;
+
+  /* 其他样式保持不变... */
+  font-family: "Tomorrow", system-ui, sans-serif;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* ===== Roach Theme Overrides ===== */
+body.roach-theme {
+  background: #ffe4f3;
+  color: #b4fb62;
+  text-align: center;
+}
+
+body.roach-theme h2 {
+  color: #ffffff;
+  text-shadow: 2px 2px 20px #ffffff;
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.35);
+}
+
+body.roach-theme .answer-choice label,
+body.roach-theme .answer-choice a,
+body.roach-theme .answer-choice button {
+  color: #ffffff;
+  text-shadow: 0 0 18px rgba(255, 255, 255, 0.8);
+}
+
+body.roach-theme .question-container {
+  gap: clamp(16px, 3vw, 32px);
+}
+
+body.roach-theme .question-form {
+  background: rgba(255, 255, 255, 0.25);
+  border-color: rgba(255, 255, 255, 0.35);
+}
+
+/* ===== big glowing circle background ===== */
+body::before {
+  content: "";
+  /* ✅ 将 position 修改为 fixed，确保大圆圈背景也锁定在屏幕，不随滚动消失 */
+  position: fixed; 
+  inset: auto -5% -5% -5%;
+  top: 25%;
+  z-index: -1;
+
+  border: 10px solid transparent;
+  border-radius: 50%;
+  background-image: radial-gradient(
+    circle at center,
+    #ff0000,
+    #ffffff 15%,
+    #00ff7f 25%,
+    #00ff7f 80%
+  );
+  box-shadow: 0 0 20px 20px #ff0000;
+  transform: scale(0.6);
+  transform-origin: center;
+  
+  /* 避免在长页面滚动时圆圈飞走 */
+  pointer-events: none;
+}
+/* ===== Title ===== */
+h2 {
+  -webkit-text-fill-color: #ff009da8;
+  font-size: clamp(32px, 3.4vw, 46px);
+  margin: 0;
+  text-shadow: 2px 2px 20px #ffffff;
+  max-width: 22ch;
+  padding: clamp(18px, 3vw, 32px);
+  border-radius: 22px;
+  border: 2px solid rgba(195, 213, 255, 0.8);
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 20px 40px rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(6px);
+  width: 100%;
+}
+
+/* ===== Card ===== */
+.question-container {
+  width: min(640px, 95vw);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(16px, 3vw, 32px);
+  text-align: center;
+  align-items: center;
+  margin: 0 auto;
+}
+
+/* ===== Form ===== */
+.question-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  width: 100%;
+  align-items: center;
+  padding: clamp(18px, 3vw, 32px);
+  border-radius: 22px;
+  border: 2px solid rgba(195, 213, 255, 0.8);
+  background: rgba(255, 255, 255, 0.7);
+  box-shadow: 0 20px 40px rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(6px);
+}
+
+/* ===== Answer row ===== */
+.answer-choice {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+
+  padding: 16px 22px;
+  border-radius: 18px;
+  border: 1.5px solid rgba(255, 255, 255, 0.8);
+  background: rgba(255, 160, 220, 0.78);
+
+  transition: transform 0.2s ease, background 0.25s ease, box-shadow 0.25s ease;
+}
+
+.answer-choice:hover {
+  transform: translateY(-2px);
+  background: rgba(255, 255, 255, 0.75);
+  box-shadow: 0 0 18px rgba(255, 120, 200, 0.6),
+    inset 0 0 10px rgba(255, 255, 255, 0.4);
+}
+
+/* ===== custom radio ===== */
+.answer-choice input[type="radio"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 2px solid #2fffa1;
+  background: transparent;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+/* 选中时让圆点实心 */
+.answer-choice input[type="radio"]:checked {
+  background: #2fffa1;
+  box-shadow: 0 0 10px rgba(47, 255, 161, 0.9);
+}
+
+/* ===== label inside answer ===== */
+.question-container p,
+.answer-choice label,
+.answer-choice a,
+.answer-choice button {
+  flex: 1;
+  margin: 0;
+  text-align: center;
+  font-size: clamp(18px, 2vw, 24px);
+  color: #fff;
+  text-shadow: 0 0 18px rgba(255, 200, 230, 0.9);
+}
+
+/* ===== checked state ===== */
+.answer-choice input:checked + label {
+  color: #62ff00;
+  text-shadow: 0 0 22px rgba(255, 255, 255, 1);
+}
+
+.answer-choice:has(input:checked) {
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 0 30px rgba(180, 255, 180, 0.8),
+    inset 0 0 14px rgba(255, 255, 255, 0.8);
+}
+
+/* ===== Stars layer (JS absolute stars) ===== */
+.star-container {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.blinking-star {
+  position: absolute;
+  margin: 0;
+  display: block;
+
+  font-size: 45px;
+  color: rgb(255, 255, 170);
+  animation: blink-animation 2s infinite;
+}
+
+@keyframes blink-animation {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+/* ===== Top circles ===== */
+.circle-container {
+  /* ✅ 将 fixed 改为 absolute */
+  position: absolute; 
+  
+  /* 确保它从页面最顶部开始计算 */
+  top: 0;
+  left: 0;
+  right: 0;
+
+  height: 48px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+
+  /* 保持 pointer-events: none 确保不干扰点击 */
+  pointer-events: none;
+  
+  /* 确保圆圈在背景之上，但在卡片之下（如果需要的话） */
+  z-index: 5; 
+}
+
+/* 如果你希望圆圈在滚动时有更自然的层次感 */
+.circle {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  box-shadow: 0 0 18px rgba(255, 255, 255, 0.85);
+  /* 可以加一点点透明度让它更融入背景 */
+  opacity: 0.9;
+}
+
+.tomorrow-extralight {
+  font-family: "Tomorrow", sans-serif;
+  font-weight: 200;
+  font-style: normal;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+  body::before {
+    transform: scale(0.8);
+  }
+
+  .question-container {
+    border-width: 1px;
+    padding: 24px 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    padding: 16px;
+  }
+
+  body::before {
+    transform: scale(1);
+    opacity: 0.4;
+  }
+
+  .question-container {
+    padding: 20px 16px;
+    border-radius: 18px;
+  }
+
+  .answer-choice {
+    gap: 10px;
+  }
+
+  .answer-choice input[type="radio"] {
+    width: 20px;
+    height: 20px;
+  }
+}
