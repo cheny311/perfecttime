@@ -1,0 +1,94 @@
+/* Light overrides for Tear Pillow page */
+
+body {
+  background: #f8f8f8;
+}
+
+.left .meta .title {
+  font-size: 28px;
+  font-weight: 600;
+}
+
+.left .meta .subline {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.left .meta .meta-label {
+  font-size: 11px;
+  letter-spacing: 0.05em;
+}
+
+.left .meta .meta-text {
+  font-size: 14px;
+}
+
+.left .toc a {
+  font-size: 13px;
+}
+
+.media img {
+  object-fit: cover;
+}
+
+/* Make process images square */
+.process-grid .media img {
+  aspect-ratio: 1 / 1;
+}
+
+/* Keep hero video tidy */
+.hero-video .table-video {
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border: 0;
+  display: block;
+}
+
+.hero-inline .hero-video {
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+}
+.hero-inline .hero-video .table-video {
+  flex: 1;
+  height: 100%;
+  min-height: 480px;
+}
+
+/* Match Hahaha spacing for text cards */
+.hero-inline .text-card p:first-child {
+  margin-bottom: 12px;
+}
+
+/* Make media thumbnails square like Hahaha */
+.media-grid .media img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+}
+
+/* Section2 media grid same三列排布 */
+#section2 .media-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+/* Ensure media grids stay three-up like other pages */
+.process-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+@media (max-width: 900px) {
+  .process-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 600px) {
+  .process-grid {
+    grid-template-columns: 1fr;
+  }
+}
