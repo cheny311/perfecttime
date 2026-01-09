@@ -55,18 +55,33 @@ body {
 .hero-video .table-video {
   width: 100%;
   height: 100%;
+  min-height: 480px; /* 再拉长一点，把卡片填满 */
+  max-width: none;   /* 取消默认 480px 限制，与其他卡片等宽 */
   aspect-ratio: 16 / 9;
   object-fit: cover;
+  margin-left: 0;
+  border: 0;
+  display: block;
+}
+/* 让视频真正顶满卡片高度 */
+.hero-inline .hero-video {
+  display: flex;
+  flex-direction: column; /* 确保说明文字在视频下方 */
+  padding: 0; /* 让视频紧贴卡片边缘 */
+}
+.hero-inline .hero-video .table-video {
+  flex: 1;
+  height: 100%;
+}
+
+/* 仅 section0：视频内容右移 20px，外框不动 */
+#section0 .hero-inline .hero-video .table-video {
+  margin-left: 20px;
+  width: calc(100% - 20px);
 }
 
 /* Use the SVG as a subtle background for the meta card */
-.left .meta {
-  background-image: url("ha.svg");
-  background-repeat: no-repeat;
-  background-size: 40% auto; /* 放大约 2 倍 */
-  background-position: center 420px;
- 
-}
+
 
 /* Make media-grid images square */
 .media-grid .media img {
@@ -78,6 +93,11 @@ body {
   margin: 0 0 12px 0;
   font-size: 18px;
   font-weight: 700;
+}
+
+/* 让首行标题与正文有明显换行间距 */
+.hero-inline .text-card p:first-child {
+  margin-bottom: 12px;
 }
 
 /* Make media square by default */
@@ -127,6 +147,16 @@ body {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 14px;
+}
+.process-grid .media img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+}
+.process-grid .media img.process-small {
+  transform: scale(1);
+  transform-origin: center;
+  display: block;
+  margin: 0 auto;
 }
 
 @media (max-width: 900px) {
