@@ -532,8 +532,9 @@ a:hover {
 
 /* Hero media full width */
 .hero-media {
-  margin-top: 18px;
-  margin-bottom: 18px;
+  margin: 0;
+  border-radius: 0;
+  border: none;
 }
 
 .hero-media img {
@@ -585,8 +586,8 @@ a:hover {
 
 /* align other table videos with the overview style */
 .media .table-video {
-  max-width: 420px;
-  aspect-ratio: 9 / 16;
+  max-width: 480px;
+  aspect-ratio: 9 / 16.5;
   object-fit: contain;
 }
 
@@ -652,6 +653,9 @@ a:hover {
 
 .zone-media {
   margin-top: 12px;
+  margin-left: 0;
+  margin-right: 0;
+  width: 100%;
   border: 1px solid var(--soft);
   border-radius: 12px;
   overflow: hidden;
@@ -659,7 +663,7 @@ a:hover {
 
 .zone-media img {
   width: 100%;
-  height: 320px;
+  height: 420px;
   object-fit: cover;
   display: block;
   background: #f3f3f3;
@@ -667,13 +671,27 @@ a:hover {
 
 .zone-media video {
   width: 100%;
-  height: 320px;
+  height: 420px;
   object-fit: cover;
   display: block;
   background: #f3f3f3;
 }
 
+.zone-media iframe {
+  width: 100%;
+  height: 420px;
+  display: block;
+  border: 0;
+  background: #f3f3f3;
+}
+
 .zone-media.video-vertical video {
+  aspect-ratio: 9 / 16;
+  height: auto;
+  max-height: 480px;
+}
+
+.zone-media.video-vertical iframe {
   aspect-ratio: 9 / 16;
   height: auto;
   max-height: 480px;
