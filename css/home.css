@@ -201,6 +201,35 @@ body {
     margin-bottom: 10px;
     background: #fff;
 }
+.project-item .box .thumb {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* 蓝色框：WeTalk / Hahaha / Tear Pillow */
+.p-diary .box,
+.p-hahaha .box,
+.p-poster .box {
+    border-color: #4a8fff;
+}
+
+/* 荧光粉框：Unspoken Pain */
+.p-thesis .box {
+    border-color: #ff3cac;
+}
+
+/* 绿色框：Dating Game */
+.p-dating .box {
+    border-color: #37a150;
+}
+
+/* TableTalk：保持默认黑色边框（独立类防止继承绿色） */
+.p-tabletalk .box {
+    border-color: #000;
+}
+
 
 .project-item p {
     font-size: 14px;
